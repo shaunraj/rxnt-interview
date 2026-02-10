@@ -1,0 +1,1 @@
+inject tenant id and resource_group_name and storage_account_name via environment variables

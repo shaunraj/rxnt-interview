@@ -25,18 +25,18 @@ run "permissions_are_added_for_all_role_assignments" {
   }
 
   variables {
-    location = "westus2"
+    location            = "westus2"
     resource_group_name = "rg-rxnt"
-    sku = "Basic"
+    sku                 = "Basic"
   }
 
   assert {
-    condition = length(azurerm_role_assignment.registry_role_definitions) == 3
+    condition     = length(azurerm_role_assignment.registry_role_definitions) == 3
     error_message = "Number of roles do not match"
   }
 
   assert {
-    condition = azurerm_role_assignment.registry_role_definitions["Container Registry Writers"].role_definition_name == "Container Registry Repository Writer"
+    condition     = azurerm_role_assignment.registry_role_definitions["Container Registry Writers"].role_definition_name == "Container Registry Repository Writer"
     error_message = "Role definition name for Container Registry Writers does not match"
   }
 }
