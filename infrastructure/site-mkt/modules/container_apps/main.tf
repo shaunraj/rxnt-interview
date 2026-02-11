@@ -36,6 +36,12 @@ resource "azurerm_container_app" "backend" {
       image  = "${data.azurerm_container_registry.container_registry.login_server}/${var.container_repository}/marketing-api:latest"
       cpu    = 1
       memory = "2Gi"
+      env {
+        name  = "REDIS_CACHE_CONNECTION_STRING"
+        value = var.redis_cache_connection_string
+      }
     }
   }
+
+
 }

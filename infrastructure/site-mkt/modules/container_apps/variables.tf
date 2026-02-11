@@ -27,3 +27,8 @@ variable "marketing_site_container_app_environment_id" {
   type        = string
   description = "The ID of the Container App Environment for the marketing site."
 }
+
+variable "redis_cache_connection_string" {
+  type        = string
+  description = "The connection string for the Redis Cache instance used by the marketing site."
+}

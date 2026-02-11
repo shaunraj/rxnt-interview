@@ -13,8 +13,10 @@ data "azurerm_container_registry" "container_registry" {
   resource_group_name = local.container_registry_resource_group_name
 }
 
+# data "azurerm_subnet"
+
 module "resource_groups" {
-  source = "./modules/resource_groups"
+  source   = "./modules/resource_groups"
   location = local.location
 }
 
@@ -24,12 +26,18 @@ module "container_app_environment" {
   resource_group_name = module.resource_groups.site_mkt_group_name
 }
 
+module "redis_cache" {
+  source              = "./modules/redis"
+  location            = local.location
+  resource_group_name = module.resource_groups.site_mkt_group_name
+}
+
 module "container_apps" {
-  source                          = "./modules/container_apps"
-  location                        = local.location
-  resource_group_name             = module.resource_groups.site_mkt_group_name
-  shared_key_vault_id            = data.azurerm_key_vault.key_vault.id
-  container_registry_resource_group_name = local.container_registry_resource_group_name
-  container_repository           = data.azurerm_container_registry.container_registry.id
+  source                                      = "./modules/container_apps"
+  location                                    = local.location
+  resource_group_name                         = module.resource_groups.site_mkt_group_name
+  shared_key_vault_id                         = data.azurerm_key_vault.key_vault.id
+  container_registry_resource_group_name      = local.container_registry_resource_group_name
+  container_repository                        = data.azurerm_container_registry.container_registry.id
   marketing_site_container_app_environment_id = module.container_app_environment.marketing_site_container_app_environment_id
 }
