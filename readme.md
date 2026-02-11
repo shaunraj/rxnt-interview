@@ -33,7 +33,3 @@ The Api container expects the following environment variables:
 - `DB_CONNECTION_STRING` to contain a connection string for a SQL Server.
 
 The solution also contains a `docker-compose.yml` file that can be used to run the site locally using Docker.
-
-
-
-## Modified docker compose to automatically tag image and created profiles

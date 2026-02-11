@@ -3,7 +3,7 @@ data "azuread_group" "marketing_database_admins" {
 }
 
 resource "azurerm_mssql_server" "marketing_sql_server" {
-  name                = "sql-rxnt"
+  name                = "sql-rxnt-${var.environment}"
   resource_group_name = var.resource_group_name
   location            = var.location
   azuread_administrator {
@@ -16,7 +16,7 @@ resource "azurerm_mssql_server" "marketing_sql_server" {
 }
 
 resource "azurerm_mssql_elasticpool" "elastic_pool" {
-  name                = "epool-marketing"
+  name                = "epool-marketing-${var.environment}"
   resource_group_name = var.resource_group_name
   location            = var.location
   server_name         = azurerm_mssql_server.marketing_sql_server.name
