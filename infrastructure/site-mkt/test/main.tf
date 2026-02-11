@@ -1,6 +1,3 @@
-
-
-
 module "resource_groups" {
   source      = "../modules/resource_groups"
   location    = local.location
