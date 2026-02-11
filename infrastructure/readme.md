@@ -13,7 +13,7 @@ Furthermore, a development container `Dockerfile.infrastructure` was created to 
 * Azure CLI
 
 ## Shared Infrastructure
-Here, an organization wide container registry is stood up. Within this container registry the images for both test and production releases are stored via a tagging system on the containers themselves.
+Here, an organization wide container registry is stood up. Within this container registry the images for both test and production releases are stored via a tagging system on the containers themselves. The reason why one doesn't exist per environment is that container registries have a pretty hefty cost when stood up idle. Container registries already support the concept of repositories. For this simple situation, a single container registry makes sense
 `docker-compose.yaml` was modified to add an "image" declaration that specified a push to the internals:latest tag. This push is facilitated by the script `push_images_test.sh`. Once images are pushed, tested, and validated, the script `push_images_production.sh` is executed to copy the latest image over to the releases repository. The docker-compose.yaml file was also modified to add profiles so that the database and redis images would not be pulled on a simple `docker compose build`. If these are needed, then a `docker compose --profile development build` will pull them.
 
 ## Marketing Site
@@ -45,13 +45,15 @@ export ARM_SUBSCRIPTION_ID=<Subscription where terraform should spin up resource
 
 The state file is stored in a blob storage container. This is so multiple people can work on the state file and it isn't lost in case of accidental deletion. The chosen storage container should have soft delete enabled so recovery of the state file is possible in case of accident. The terraform backend will have to be configured so that the container of the engineer's choosing can store the state
 
-`terraform init -backend-config=``"resource_group_name=<resource group name>" -backend-config=``"storage_account_name=<storage account name>" -backend-config=``"container_name=<container name>" -backend-config=``"key=<blob key name>"`
+* `terraform init -backend-config=``"resource_group_name=<resource group name>" -backend-config=``"storage_account_name=<storage account name>" -backend-config=``"container_name=<container name>" -backend-config=``"key=<blob key name>"`
 
 A plan should then be run
 
-`terraform plan -out=tfplan`
+* `terraform plan -out=tfplan`
 
-`terraform apply`
+Then a deployment should be performed:
+
+* `terraform apply`
 
 ### Entra Groups
 
@@ -79,8 +81,18 @@ The following environment variables need to be set:
 export ARM_ACCESS_KEY=<Access key of storage container where state file should be stored>
 export ARM_TENANT_ID=<Tenant where terraform should spin up resources>
 export ARM_SUBSCRIPTION_ID=<Subscription where terraform should spin up resources>
+export TF_VAR_environment=<name of environment that we are spinning up: dev, prod, etc.>
+export TF_VAR_registry_repository=<name of repository in container registry we want to look at for the environment: internals, releases, etc.>
 ```
 
 The state file is stored in a blob storage container. This is so multiple people can work on the state file and it isn't lost in case of accidental deletion. The chosen storage container should have soft delete enabled so recovery of the state file is possible in case of accident. The terraform backend will have to be configured so that the container of the engineer's choosing can store the state
 
-`terraform init -backend-config=``"resource_group_name=<resource group name>" -backend-config=``"storage_account_name=<storage account name>" -backend-config=``"container_name=<container name>" -backend-config=``"key=<blob key name>"`
+* `terraform init -backend-config=``"resource_group_name=<resource group name>" -backend-config=``"storage_account_name=<storage account name>" -backend-config=``"container_name=<container name>" -backend-config=``"key=<blob key name>"`
+
+A plan should then be run
+
+* `terraform plan -out=tfplan`
+
+Then a deployment should be performed:
+
+* `terraform apply`
