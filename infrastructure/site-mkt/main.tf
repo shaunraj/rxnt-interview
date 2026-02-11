@@ -8,6 +8,16 @@ data "azurerm_key_vault_secret" "registry_name" {
   key_vault_id = data.azurerm_key_vault.key_vault.id
 }
 
+data "azurerm_key_vault_certificate" "gateway_certificate" {
+  name         = "gateway-certificate"
+  key_vault_id = data.azurerm_key_vault.key_vault.id
+}
+
+data "azurerm_key_vault_secret" "certificate_password" {
+  name         = "gateway-certificate-password"
+  key_vault_id = data.azurerm_key_vault.key_vault.id
+}
+
 data "azurerm_container_registry" "container_registry" {
   name                = data.azurerm_key_vault_secret.registry_name.value
   resource_group_name = local.container_registry_resource_group_name
@@ -46,4 +56,12 @@ module "container_apps" {
   marketing_site_container_app_environment_id = module.container_app_environment.marketing_site_container_app_environment_id
   redis_cache_connection_string               = module.redis_cache.redis_cache_connection_string
   sql_db_connection_string                    = module.sql_server.sql_server_connection_string
+}
+
+module "application_gateway" {
+  source              = "./modules/application_gateway"
+  location            = local.location
+  resource_group_name = module.resource_groups.site_mkt_group_name
+  pfx_certificate_data_base64 = data.azurerm_key_vault_certificate.gateway_certificate.certificate_data
+  cert_password = data.azurerm_key_vault_secret.certificate_password.value
 }

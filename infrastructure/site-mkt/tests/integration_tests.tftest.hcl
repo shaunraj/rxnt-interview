@@ -23,6 +23,13 @@ mock_provider "azurerm" {
       value = "testSecret"
     }
   }
+
+  mock_data "azurerm_key_vault_certificate" {
+    defaults = {
+      #Random base64 string to represent the certificate value, since the actual value is not important for the test
+      value = "dHJhdmVsbXVzaWNhbGNoaWVmc2F3Y2hvaWNlYXBwZWFyYW5jZWJsb2NrY3VycmVudGQ="
+    }
+  }
 }
 
 mock_provider "azuread" {

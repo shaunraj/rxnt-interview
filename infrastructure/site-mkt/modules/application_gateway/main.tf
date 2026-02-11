@@ -5,6 +5,21 @@ resource "azurerm_public_ip" "frontend_ip" {
   allocation_method   = "Static"
 }
 
+resource "azurerm_virtual_network" "marketing_vnet" {
+  name                = local.vnet_name
+  resource_group_name = var.resource_group_name
+  location            = var.location
+  address_space       = ["10.0.0.0/24"]  
+}
+
+resource "azurerm_subnet" "subnet" {
+  name                 = "subnet-marketing-appgw"
+  resource_group_name  = var.resource_group_name
+  virtual_network_name = azurerm_virtual_network.marketing_vnet.name
+  address_prefixes     = ["10.0.1.0/24"]
+}
+
+
 resource "azurerm_application_gateway" "marketing_site" {
   name                = "agw-marketing-site"
   resource_group_name = var.resource_group_name
@@ -17,7 +32,7 @@ resource "azurerm_application_gateway" "marketing_site" {
 
   gateway_ip_configuration {
     name      = "ip-config"
-    subnet_id = var.subnet_id
+    subnet_id = azurerm_subnet.subnet.id
   }
 
   frontend_port {
@@ -32,7 +47,7 @@ resource "azurerm_application_gateway" "marketing_site" {
 
   frontend_ip_configuration {
     name                 = local.frontend_ip_configuration_name
-    public_ip_address_id = azurerm_public_ip.frontend_ip
+    public_ip_address_id = azurerm_public_ip.frontend_ip.id
   }
 
   backend_address_pool {
@@ -92,7 +107,8 @@ resource "azurerm_application_gateway" "marketing_site" {
   }
 
   autoscale_configuration {
-    min_capacity = 0
+    min_capacity = 0 
     max_capacity = 50
   }
+
 }
