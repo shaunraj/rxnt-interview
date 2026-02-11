@@ -11,8 +11,6 @@ terraform {
     }
   }
   backend "azurerm" {
-    #resource_group_name and storage_account_name will need to be injected via the pipeline as environment variables
-    container_name = "terraform_state"
     key            = "shared.tfstate"
   }
 }

@@ -12,3 +12,8 @@ variable "resource_group_name" {
   type        = string
   description = "The name of the resource group where the Key Vault will be created."
 }
+
+variable "backend_managed_identity" {
+  type        = string
+  description = "The principal ID of the backend container app's managed identity. This will be used to grant the backend access to the Key Vault."
+}

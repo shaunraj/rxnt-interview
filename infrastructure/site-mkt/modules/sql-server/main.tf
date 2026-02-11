@@ -21,7 +21,7 @@ resource "azurerm_mssql_elasticpool" "elastic_pool" {
   location            = var.location
   server_name         = azurerm_mssql_server.marketing_sql_server.name
   license_type        = "LicenseIncluded"
-  max_size_gb         = 756
+  max_size_gb         = 4
 
   sku {
     name     = "BasicPool"

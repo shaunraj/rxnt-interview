@@ -64,3 +64,9 @@ resource "azurerm_key_vault_certificate" "self-signed-cert" {
     }
   }
 }
+
+resource "azurerm_role_assignment" "backend_key_vault_access" {
+  principal_id         = var.backend_managed_identity
+  role_definition_name = "Key Vault Secrets User"
+  scope                = azurerm_key_vault.marketing-site-key-vault.id
+}

@@ -8,7 +8,6 @@ variable "resource_group_name" {
   description = "The name of the resource group where the Container App will be created."
 }
 
-
 variable "container_repository" {
   type        = string
   description = "The name of the container repository in the Azure Container Registry where the marketing site images are stored."

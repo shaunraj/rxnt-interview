@@ -41,8 +41,8 @@ module "application_gateway" {
   source                      = "../modules/application_gateway"
   location                    = local.location
   resource_group_name         = module.resource_groups.site_mkt_group_name
-  pfx_certificate_data_base64 = data.azurerm_key_vault_certificate.gateway_certificate.certificate_data
-  cert_password               = data.azurerm_key_vault_secret.certificate_password.value
+  pfx_certificate_data_base64 = azurerm_key_vault_certificate.self-signed-cert.certificate_data
+  cert_password               = azurerm_key_vault_certificate.self-signed-cert.password
   environment                 = local.environment
 }
 
@@ -51,4 +51,6 @@ module "key_vault" {
   location            = local.location
   resource_group_name = local.shared_key_vault_resource_group_name
   environment         = local.environment
+  backend_managed_identity = module.container_apps.backend_managed_identity
 }
+
