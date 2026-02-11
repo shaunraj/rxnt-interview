@@ -5,7 +5,7 @@ This codebase details the infrastructure necessary to run the marketing departme
 * `infrastructure/shared` - the collection of infrastructure needed across the entire organization to support the instantiation of the site's infrastructure
 * `infrastructure/site-mkt` - the collection of infrastructure needed to actually spin up the site for execution
 
-Furthermore, a development container `Dockerfile.infrastructure` was created to allow for anyone to develop infrastructure without the need for specific machine setup. The environment is a ubuntu 24.04 image and comes with:
+Furthermore, a development container `../Dockerfile.infrastructure` was created to allow for anyone to develop infrastructure without the need for specific machine setup. The environment is a ubuntu 24.04 image and comes with:
 
 * docker
 * docker-compose
@@ -14,7 +14,7 @@ Furthermore, a development container `Dockerfile.infrastructure` was created to 
 
 ## Shared Infrastructure
 Here, an organization wide container registry is stood up. Within this container registry the images for both test and production releases are stored via a tagging system on the containers themselves. The reason why one doesn't exist per environment is that container registries have a pretty hefty cost when stood up idle. Container registries already support the concept of repositories. For this simple situation, a single container registry makes sense
-`docker-compose.yaml` was modified to add an "image" declaration that specified a push to the internals:latest tag. This push is facilitated by the script `push_images_test.sh`. Once images are pushed, tested, and validated, the script `push_images_production.sh` is executed to copy the latest image over to the releases repository. The docker-compose.yaml file was also modified to add profiles so that the database and redis images would not be pulled on a simple `docker compose build`. If these are needed, then a `docker compose --profile development build` will pull them.
+`../docker-compose.yaml` was modified to add an "image" declaration that specified a push to the internals:latest tag. This push is facilitated by the script `../push_images_test.sh`. Once images are pushed, tested, and validated, the script `../push_images_production.sh` is executed to copy the latest image over to the releases repository. The docker-compose.yaml file was also modified to add profiles so that the database and redis images would not be pulled on a simple `docker compose build`. If these are needed, then a `docker compose --profile development build` will pull them.
 
 ## Marketing Site
 The marketing site contains several pieces of infrastructure:
