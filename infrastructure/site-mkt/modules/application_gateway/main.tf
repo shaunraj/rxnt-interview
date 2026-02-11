@@ -21,7 +21,7 @@ resource "azurerm_subnet" "subnet" {
 
 
 resource "azurerm_application_gateway" "marketing_site" {
-  name                = "agw-marketing-site"
+  name                = "agw-marketing-site-${var.environment}"
   resource_group_name = var.resource_group_name
   location            = var.location
   sku {

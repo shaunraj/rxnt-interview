@@ -17,3 +17,8 @@ variable "cert_password" {
   type        = string
   description = "The password for the PFX certificate used by the Application Gateway."
 }
+
+variable "environment" {
+  type        = string
+  description = "The environment (e.g., dev, test, prod) for which the Container App environment is being created."
+}

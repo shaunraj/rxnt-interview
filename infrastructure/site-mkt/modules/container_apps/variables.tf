@@ -37,3 +37,8 @@ variable "sql_db_connection_string" {
   type        = string
   description = "The connection string for the SQL Database used by the marketing site."
 }
+
+variable "environment" {
+  type        = string
+  description = "The environment (e.g., dev, test, prod) for which the Container App environment is being created."
+}

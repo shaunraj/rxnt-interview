@@ -1,5 +1,5 @@
 locals {
-  vnet_name                      = "vnet-marketing"
+  vnet_name                      = "vnet-marketing-${var.environment}"
   backend_address_pool_name      = "${local.vnet_name}-beap"
   frontend_port_name             = "${local.vnet_name}-feport"
   frontend_ip_configuration_name = "${local.vnet_name}-feip"

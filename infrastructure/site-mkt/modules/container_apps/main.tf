@@ -9,7 +9,7 @@ data "azurerm_container_registry" "container_registry" {
 }
 
 resource "azurerm_container_app" "frontend" {
-  name                         = "aca-marketing-frontend"
+  name                         = "aca-marketing-frontend-${var.environment}"
   container_app_environment_id = var.marketing_site_container_app_environment_id
   resource_group_name          = var.resource_group_name
   revision_mode                = "Single"
@@ -31,7 +31,7 @@ resource "azurerm_container_app" "frontend" {
 }
 
 resource "azurerm_container_app" "backend" {
-  name                         = "aca-marketing-api"
+  name                         = "aca-marketing-api-${var.environment}"
   container_app_environment_id = var.marketing_site_container_app_environment_id
   resource_group_name          = var.resource_group_name
   revision_mode                = "Single"
