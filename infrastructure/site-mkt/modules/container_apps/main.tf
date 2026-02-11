@@ -6,7 +6,7 @@ resource "azurerm_container_app" "frontend" {
 
   template {
     max_replicas = 10
-    
+
     http_scale_rule {
       name                = "http-rule"
       concurrent_requests = 50

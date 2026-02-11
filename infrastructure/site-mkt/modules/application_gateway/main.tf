@@ -9,7 +9,7 @@ resource "azurerm_virtual_network" "marketing_vnet" {
   name                = local.vnet_name
   resource_group_name = var.resource_group_name
   location            = var.location
-  address_space       = ["10.0.0.0/24"]  
+  address_space       = ["10.0.0.0/24"]
 }
 
 resource "azurerm_subnet" "subnet" {
@@ -107,7 +107,7 @@ resource "azurerm_application_gateway" "marketing_site" {
   }
 
   autoscale_configuration {
-    min_capacity = 0 
+    min_capacity = 0
     max_capacity = 50
   }
 
