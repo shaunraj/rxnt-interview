@@ -11,7 +11,7 @@ terraform {
     }
   }
   backend "azurerm" {
-    key = "site.test.tfstate"
+    key = "site.${var.environment}.tfstate"
   }
 }
 

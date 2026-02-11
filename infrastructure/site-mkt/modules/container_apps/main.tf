@@ -63,12 +63,12 @@ resource "azurerm_container_app" "frontend" {
   }
 }
 
-resource "azuread_group_member" "registry_role_definitions" {
-  group_object_id  = data.azuread_group.registry_readers.id
+resource "azuread_group_member" "frontend_container_registry_role_definition" {
+  group_object_id  = data.azuread_group.registry_readers.object_id
   member_object_id = azurerm_container_app.frontend.identity[0].principal_id
 }
 
-resource "azuread_group_member" "registry_role_definitions" {
-  group_object_id  = data.azuread_group.registry_readers.id
+resource "azuread_group_member" "backend_container_registry_role_definition" {
+  group_object_id  = data.azuread_group.registry_readers.object_id
   member_object_id = azurerm_container_app.backend.identity[0].principal_id
 }

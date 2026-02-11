@@ -1,4 +1,4 @@
-resource "azurerm_key_vault" "marketing-site-key-vault" {
+resource "azurerm_key_vault" "marketing_site_key_vault" {
   name                       = "kv-site-mkt-${var.environment}"
   location                   = var.location
   resource_group_name        = var.resource_group_name
@@ -13,9 +13,9 @@ resource "azurerm_key_vault" "marketing-site-key-vault" {
   }
 }
 
-resource "azurerm_key_vault_certificate" "self-signed-cert" {
+resource "azurerm_key_vault_certificate" "self_signed_cert" {
   name         = "generated-cert"
-  key_vault_id = azurerm_key_vault.marketing-site-key-vault.id
+  key_vault_id = azurerm_key_vault.marketing_site_key_vault.id
 
   certificate_policy {
     issuer_parameters {
@@ -44,8 +44,6 @@ resource "azurerm_key_vault_certificate" "self-signed-cert" {
     }
 
     x509_certificate_properties {
-      extended_key_usage = ["1.3.6.1.5.5.7.3.1"]
-
       key_usage = [
         "cRLSign",
         "dataEncipherment",
@@ -55,11 +53,7 @@ resource "azurerm_key_vault_certificate" "self-signed-cert" {
         "keyEncipherment",
       ]
 
-      subject_alternative_names {
-        dns_names = ["internal.contoso.com", "domain.hello.world"]
-      }
-
-      subject            = "CN=hello-world"
+      subject            = "CN=test"
       validity_in_months = 12
     }
   }
@@ -68,5 +62,5 @@ resource "azurerm_key_vault_certificate" "self-signed-cert" {
 resource "azurerm_role_assignment" "backend_key_vault_access" {
   principal_id         = var.backend_managed_identity
   role_definition_name = "Key Vault Secrets User"
-  scope                = azurerm_key_vault.marketing-site-key-vault.id
+  scope                = azurerm_key_vault.marketing_site_key_vault.id
 }

@@ -65,7 +65,6 @@ resource "azurerm_application_gateway" "marketing_site" {
   ssl_certificate {
     name     = "appgw-ssl-cert"
     data     = var.pfx_certificate_data_base64
-    password = var.cert_password
   }
 
   http_listener {
