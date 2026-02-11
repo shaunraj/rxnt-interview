@@ -29,13 +29,12 @@ module "container_apps" {
   source                                      = "../modules/container_apps"
   location                                    = local.location
   resource_group_name                         = module.resource_groups.site_mkt_group_name
-  shared_key_vault_id                         = data.azurerm_key_vault.key_vault.id
-  container_registry_resource_group_name      = local.container_registry_resource_group_name
-  container_repository                        = data.azurerm_container_registry.container_registry.id
+  container_repository                        = local.registry_repository
   marketing_site_container_app_environment_id = module.container_app_environment.marketing_site_container_app_environment_id
   redis_cache_connection_string               = module.redis_cache.redis_cache_connection_string
   sql_db_connection_string                    = module.sql_server.sql_server_connection_string
   environment                                 = local.environment
+  registry_url                                = data.azurerm_container_registry.container_registry.login_server
 }
 
 module "application_gateway" {

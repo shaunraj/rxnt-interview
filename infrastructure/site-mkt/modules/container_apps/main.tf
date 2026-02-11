@@ -28,13 +28,14 @@ resource "azurerm_container_app" "backend" {
 
   template {
     max_replicas = 10
+
     http_scale_rule {
       name                = "http-rule"
       concurrent_requests = 50
     }
     container {
       name   = "backend"
-      image  = "${data.azurerm_container_registry.container_registry.login_server}/${var.container_repository}/marketing-api:latest"
+      image  = "${var.registry_url}/${var.container_repository}/marketing-api:latest"
       cpu    = 0.5
       memory = "1Gi"
       env {
