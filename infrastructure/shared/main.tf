@@ -15,13 +15,13 @@ module "container_registries" {
   sku                 = local.sku
   resource_group_name = module.resource_groups.shared_resource_group_name
   subnet_id           = module.virtual_networks.production_vnet_id
-  virtual_network_id  = module.virtual_networks.infrastructure_vnet_id
 }
 
 module "key_vaults" {
   source              = "./modules/key_vaults"
   location            = local.location
   resource_group_name = module.resource_groups.shared_resource_group_name
+  subnet_id           = module.virtual_networks.production_vnet_id
 }
 
 module "key_vault_secrets" {

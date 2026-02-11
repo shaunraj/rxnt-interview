@@ -13,11 +13,6 @@ variable "resource_group_name" {
   description = "The name of the resource group where the container registry will be created."
 }
 
-variable "virtual_network_id" {
-  type        = string
-  description = "The ID of the virtual network to which the container registry will be connected."
-}
-
 variable "subnet_id" {
   type        = string
   description = "Id of the subnet where to spin up the container registry"

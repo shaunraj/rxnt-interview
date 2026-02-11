@@ -52,7 +52,7 @@ resource "azurerm_application_gateway" "marketing_site" {
     data     = var.pfx_certificate_data_base64
     password = var.cert_password
   }
-  
+
   http_listener {
     name                           = "https-listener"
     frontend_ip_configuration_name = "frontend-ip-config"
@@ -89,5 +89,10 @@ resource "azurerm_application_gateway" "marketing_site" {
     rule_type                   = "Basic"
     http_listener_name          = "http-listener"
     redirect_configuration_name = "http-to-https-redirect"
+  }
+
+  autoscale_configuration {
+    min_capacity = 0 
+    max_capacity = 50
   }
 }
