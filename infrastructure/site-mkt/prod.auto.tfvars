@@ -1,2 +1,2 @@
-environment                            = "prod"
-registry_repository                    = "releases"
+environment         = "prod"
+registry_repository = "releases"

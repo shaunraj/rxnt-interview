@@ -11,7 +11,7 @@ terraform {
     }
   }
   backend "azurerm" {
-    key            = "shared.tfstate"
+    key = "shared.tfstate"
   }
 }
 

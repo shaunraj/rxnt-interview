@@ -47,10 +47,10 @@ module "application_gateway" {
 }
 
 module "key_vault" {
-  source              = "../modules/key_vaults"
-  location            = local.location
-  resource_group_name = local.shared_key_vault_resource_group_name
-  environment         = local.environment
+  source                   = "../modules/key_vaults"
+  location                 = local.location
+  resource_group_name      = local.shared_key_vault_resource_group_name
+  environment              = local.environment
   backend_managed_identity = module.container_apps.backend_managed_identity
 }
 

@@ -1,2 +1,2 @@
-environment                            = "test"
-registry_repository                    = "internal"
+environment         = "test"
+registry_repository = "internal"
