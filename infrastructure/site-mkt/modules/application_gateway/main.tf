@@ -92,7 +92,7 @@ resource "azurerm_application_gateway" "marketing_site" {
   }
 
   autoscale_configuration {
-    min_capacity = 0 
+    min_capacity = 0
     max_capacity = 50
   }
 }

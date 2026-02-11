@@ -13,17 +13,3 @@ resource "azurerm_key_vault" "key_vault" {
     project = "shared-resources"
   }
 }
-
-resource "azurerm_private_endpoint" "pep" {
-  name                = "pep-acrrxnt"
-  location            = var.location
-  resource_group_name = var.resource_group_name
-  subnet_id           = var.subnet_id
-
-  private_service_connection {
-    name                           = "pep-connection-acr"
-    private_connection_resource_id = azurerm_key_vault.key_vault.id
-    is_manual_connection           = false
-    subresource_names              = ["keyvault"]
-  }
-}

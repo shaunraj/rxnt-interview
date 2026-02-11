@@ -3,25 +3,17 @@ module "resource_groups" {
   location = local.location
 }
 
-module "virtual_networks" {
-  source              = "./modules/virtual_networks"
-  location            = local.location
-  resource_group_name = module.resource_groups.shared_resource_group_name
-}
-
 module "container_registries" {
   source              = "./modules/container_registries"
   location            = local.location
   sku                 = local.sku
   resource_group_name = module.resource_groups.shared_resource_group_name
-  subnet_id           = module.virtual_networks.production_vnet_id
 }
 
 module "key_vaults" {
   source              = "./modules/key_vaults"
   location            = local.location
   resource_group_name = module.resource_groups.shared_resource_group_name
-  subnet_id           = module.virtual_networks.production_vnet_id
 }
 
 module "key_vault_secrets" {

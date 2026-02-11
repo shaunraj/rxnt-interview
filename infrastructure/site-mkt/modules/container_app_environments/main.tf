@@ -19,5 +19,4 @@ resource "azurerm_container_app_environment" "marketing_container_app_env" {
   tags = {
     project = "site-mkt"
   }
-
 }

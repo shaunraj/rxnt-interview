@@ -16,8 +16,9 @@ resource "azurerm_container_app" "frontend" {
 
   template {
     max_replicas = 10
-    http_scale_rule{
-      name = "http-rule"
+    
+    http_scale_rule {
+      name                = "http-rule"
       concurrent_requests = 50
     }
     container {
@@ -37,8 +38,8 @@ resource "azurerm_container_app" "backend" {
 
   template {
     max_replicas = 10
-    http_scale_rule{
-      name = "http-rule"
+    http_scale_rule {
+      name                = "http-rule"
       concurrent_requests = 50
     }
     container {
@@ -49,6 +50,11 @@ resource "azurerm_container_app" "backend" {
       env {
         name  = "REDIS_CACHE_CONNECTION_STRING"
         value = var.redis_cache_connection_string
+      }
+
+      env {
+        name  = "DB_CONNECTION_STRING"
+        value = var.sql_db_connection_string
       }
     }
   }

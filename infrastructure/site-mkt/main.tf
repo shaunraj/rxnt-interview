@@ -13,8 +13,6 @@ data "azurerm_container_registry" "container_registry" {
   resource_group_name = local.container_registry_resource_group_name
 }
 
-# data "azurerm_subnet"
-
 module "resource_groups" {
   source   = "./modules/resource_groups"
   location = local.location
@@ -32,6 +30,12 @@ module "redis_cache" {
   resource_group_name = module.resource_groups.site_mkt_group_name
 }
 
+module "sql_server" {
+  source              = "./modules/sql-server"
+  location            = local.location
+  resource_group_name = module.resource_groups.site_mkt_group_name
+}
+
 module "container_apps" {
   source                                      = "./modules/container_apps"
   location                                    = local.location
@@ -40,4 +44,6 @@ module "container_apps" {
   container_registry_resource_group_name      = local.container_registry_resource_group_name
   container_repository                        = data.azurerm_container_registry.container_registry.id
   marketing_site_container_app_environment_id = module.container_app_environment.marketing_site_container_app_environment_id
+  redis_cache_connection_string               = module.redis_cache.redis_cache_connection_string
+  sql_db_connection_string                    = module.sql_server.sql_server_connection_string
 }

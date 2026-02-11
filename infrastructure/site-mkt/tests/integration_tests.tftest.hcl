@@ -32,6 +32,7 @@ mock_provider "azuread" {
       object_id = "11111111-1111-1111-1111-111111111111"
     }
   }
+
 }
 
 run "modules_are_hooked_up_correctly_and_pass_validation" {
