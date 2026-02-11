@@ -1,27 +1,5 @@
-data "azurerm_key_vault" "key_vault" {
-  name                = local.shared_key_vault_name
-  resource_group_name = local.shared_key_vault_resource_group_name
-}
 
-data "azurerm_key_vault_secret" "registry_name" {
-  name         = "container-registry-name"
-  key_vault_id = data.azurerm_key_vault.key_vault.id
-}
 
-data "azurerm_key_vault_certificate" "gateway_certificate" {
-  name         = "${local.environment}-gateway-certificate"
-  key_vault_id = data.azurerm_key_vault.key_vault.id
-}
-
-data "azurerm_key_vault_secret" "certificate_password" {
-  name         = "${local.environment}-gateway-certificate-password"
-  key_vault_id = data.azurerm_key_vault.key_vault.id
-}
-
-data "azurerm_container_registry" "container_registry" {
-  name                = data.azurerm_key_vault_secret.registry_name.value
-  resource_group_name = local.container_registry_resource_group_name
-}
 
 module "resource_groups" {
   source      = "../modules/resource_groups"
@@ -67,7 +45,66 @@ module "application_gateway" {
   source                      = "../modules/application_gateway"
   location                    = local.location
   resource_group_name         = module.resource_groups.site_mkt_group_name
-  pfx_certificate_data_base64 = data.azurerm_key_vault_certificate.gateway_certificate.certificate_data
-  cert_password               = data.azurerm_key_vault_secret.certificate_password.value
+  pfx_certificate_data_base64 = azurerm_key_vault_certificate.self-signed-cert.certificate_data
+  cert_password               = azurerm_key_vault_certificate.self-signed-cert.password
   environment                 = local.environment
+}
+
+module "key_vault" {
+  source              = "../modules/key_vaults"
+  location            = local.location
+  resource_group_name = local.shared_key_vault_resource_group_name
+  environment         = local.environment
+}
+
+resource "azurerm_key_vault_certificate" "self-signed-cert" {
+  name         = "generated-cert"
+  key_vault_id = module.key_vault.key_vault_id
+
+  certificate_policy {
+    issuer_parameters {
+      name = "Self"
+    }
+
+    key_properties {
+      exportable = true
+      key_size   = 2048
+      key_type   = "RSA"
+      reuse_key  = true
+    }
+
+    lifetime_action {
+      action {
+        action_type = "AutoRenew"
+      }
+
+      trigger {
+        days_before_expiry = 365
+      }
+    }
+
+    secret_properties {
+      content_type = "application/x-pkcs12"
+    }
+
+    x509_certificate_properties {
+      extended_key_usage = ["1.3.6.1.5.5.7.3.1"]
+
+      key_usage = [
+        "cRLSign",
+        "dataEncipherment",
+        "digitalSignature",
+        "keyAgreement",
+        "keyCertSign",
+        "keyEncipherment",
+      ]
+
+      subject_alternative_names {
+        dns_names = ["internal.contoso.com", "domain.hello.world"]
+      }
+
+      subject            = "CN=hello-world"
+      validity_in_months = 12
+    }
+  }
 }

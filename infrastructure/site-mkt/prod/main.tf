@@ -46,3 +46,10 @@ module "application_gateway" {
   cert_password               = data.azurerm_key_vault_secret.certificate_password.value
   environment                 = local.environment
 }
+
+module "key_vault" {
+  source              = "../modules/key_vaults"
+  location            = local.location
+  resource_group_name = local.shared_key_vault_resource_group_name
+  environment         = local.environment
+}

@@ -7,8 +7,12 @@ The following environment variables need to be set:
 
 ```
 export ARM_ACCESS_KEY=<Access key of storage container where state file should be stored>
-export
+export ARM_TENANT_ID=<Tenant where terraform should spin up resources>
+export ARM_SUBSCRIPTION_ID=<Subscription where terraform should spin up resources>
 ```
+
+`terraform init -backend-config=``"resource_group_name=<resource group name>" -backend-config=``"storage_account_name=<storage account name>" -backend-config=``"container_name=<container name>" -backend-config=``"key=<blob key name>"`
+
 
 ## How to deploy site infrastructure
 inject tenant id and resource_group_name and storage_account_name via environment variables
