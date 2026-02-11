@@ -5,6 +5,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.site
+      image: "${ACR_REGISTRY_URL}/internal/marketing-site:latest"
     ports:
       - "8881:8080"
     environment:
@@ -27,6 +28,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.api
+      image: "${ACR_REGISTRY_URL}/internal/marketing-api:latest"
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - DB_CONNECTION_STRING=Server=database;Database=master;User Id=sa;Password=Password123; TrustServerCertificate=True;
@@ -48,6 +50,7 @@ services:
       interval: 3s
       timeout: 10s
       retries: 5
+    profiles: ["development"]
 
   database:
     image: mcr.microsoft.com/mssql/server:2022-latest
@@ -60,3 +63,4 @@ services:
       retries: 15
       start_period: 10s
       timeout: 1s
+    profiles: ["development"]
