@@ -34,6 +34,8 @@ The elastic pool enables the sql server to exert more resource in case of resour
 
 Both of these processes should allow for more scalable infrastructure regardless of the time of spike.
 
+The application gateway has a built in web application firewall (WAF) with support for bot protection and other security nicities as well as built in failover. 
+
 ## How to deploy shared
 The following environment variables need to be set:
 
